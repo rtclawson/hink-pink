@@ -4,35 +4,41 @@
 </head>
 <body>
 <h2>Stinky Pinky</h2>
-Clue: <span id=clue-1></span>&nbsp;<span id=clue-2></span>
+Clue: <div id=clue-1></div><div id=clue-2></div>
 <br>
-Answer: <span id=answer-1></span>&nbsp;<span id=answer-2></span>
+Answer: <div id=answer-1></div><div id=answer-2></div>
 <script type="text/javascript">
   $(document).ready(function() {
-    var ans1 = 'lame';
-    var ans2 = 'game';
+    var ans1 = 'money';
+    var ans2 = 'bunny';
     var clue1;
     var clue2;
     $.ajax({
       type: "GET",
-      url: 'http://api.datamuse.com/words?rel_syn='+ans1,
+      url: 'http://api.datamuse.com/words?rel_spc='+ans1,
       dataType: "json",
       cache: false,
       crossDomain: true,
       processData: true,
       success: function (data) {
-        $('#clue-1').append(data[0]['word']);
+        var str = '';
+        for (var i =0; i < data.length;i++)
+          str += data[i]['word'] + ' ';
+        $('#clue-1').append(str);
       }
     });
     $.ajax({
       type: "GET",
-      url: 'http://api.datamuse.com/words?rel_syn='+ans2,
+      url: 'http://api.datamuse.com/words?rel_spc='+ans2,
       dataType: "json",
       cache: false,
       crossDomain: true,
       processData: true,
       success: function (data) {
-        $('#clue-2').append(data[2]['word']);
+        var str = '';
+        for (var i =0; i < data.length;i++)
+          str += data[i]['word'] + ' ';
+        $('#clue-2').append(str);
       }
     });
     $('#answer-1').append(ans1);
