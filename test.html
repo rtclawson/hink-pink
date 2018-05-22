@@ -4,18 +4,34 @@
 </head>
 <body>
 <h2>Stinky Pinky</h2>
-Clue1: <div id=clue-1></div>
+Clue1: <div id="clue-1"></div>
 
-Clue2: <div id=clue-2></div>
+Clue2: <div id="clue-2"></div>
 <br>
-Answer: <div id=answer-1></div><div id=answer-2></div>
+Answer: <input type="text" name="answer" id='answer-input'><br>
+<div id="winner">You got it!</div>
 <script type="text/javascript">
-
+var clue1;
+var ans1;
+var ans2;
+var syllables;
 function request_word(source_word, word_type, success_callback) {
     // see datamuse api for valid word_type, for example rel_spc
     $.ajax({
       type: "GET",
-      url: 'http://api.datamuse.com/words?'+ word_type + '=' + source_word,
+      url: 'http://api.datamuse.com/words?'+ word_type + '=' + source_word + "&md=p",
+      dataType: "json",
+      cache: false,
+      crossDomain: true,
+      processData: true,
+      success: success_callback
+    });
+}
+function more_info(source_word, word_type, success_callback) {
+    // see datamuse api for valid word_type, for example rel_spc
+    $.ajax({
+      type: "GET",
+      url: 'http://api.datamuse.com/words?sp=' + source_word + "&qe=sp&md=sp",
       dataType: "json",
       cache: false,
       crossDomain: true,
@@ -29,7 +45,6 @@ function set_clue(clue, data) {
     str += data[i]['word'] + ' ';
   }
   clue.append(str);
-  console.log(str);
 }
 
 function get_clues(ans1, ans2) {
@@ -52,13 +67,45 @@ words = ['time','year','people','way','day','man','thing','woman','life',
    'girl','guy','moment','air','teacher','force','education'];
 
   $(document).ready(function() {
-    var ans1 = words[Math.floor(Math.random()*words.length)];
-    console.log(ans1);
-    $('#answer-1').append(ans1);
-    request_word(ans1, 'rel_rhy', function(data) {
-        ans2 = data[0]['word'];
-        $('#answer-2').append(ans2);
-        console.log(ans2);
+    ans2 = words[Math.floor(Math.random()*words.length)];
+	more_info(ans2, 'qe=sp', function(data){
+		syllables = data[0]['numSyllables'];
+		console.log("Syllables = " + syllables);
+	});
+    console.log("First word: " + ans2);
+    $('#winner').hide();
+    $('#answer-input').on('input', function () {
+        var guess = $(this).val();
+        console.log(guess);
+        var words = guess.split(" ");
+        if (words[0] === ans1 && words[1] === ans2)
+			$('#winner').show();
+        else
+            $('#winner').hide();
+
+    });
+    request_word(ans2, 'rel_rhy', function(data) {
+		console.log("Number of rhyming words: " + data.length);
+	    for (var index = 0; index<data.length;index++)
+		{
+			console.log(data[index]);
+			console.log(data[index]['tags']);
+		    if (data[index]['tags'].indexOf('adj') > -1)
+			    console.log("Found adjective");
+			if (data[index]['numSyllables'] === syllables && 
+			    data[index]['tags'].indexOf('adj') > -1)
+			{
+				ans1 = data[index]['word'];
+				break;
+			}
+		}
+		if (!ans1)
+		{
+			ans1 = "broken";
+		}
+		console.log("Rhyming adjective: " + ans1);
+		console.log("Noun: " + ans2);
+		console.log(ans1 + " " + ans2);
         get_clues(ans1, ans2);
     });
   });
