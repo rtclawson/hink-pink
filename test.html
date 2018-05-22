@@ -19,7 +19,7 @@ function request_word(source_word, word_type, success_callback) {
     // see datamuse api for valid word_type, for example rel_spc
     $.ajax({
       type: "GET",
-      url: 'http://api.datamuse.com/words?'+ word_type + '=' + source_word + "&md=p",
+      url: 'https://api.datamuse.com/words?'+ word_type + '=' + source_word + "&md=p",
       dataType: "json",
       cache: false,
       crossDomain: true,
@@ -31,7 +31,7 @@ function more_info(source_word, word_type, success_callback) {
     // see datamuse api for valid word_type, for example rel_spc
     $.ajax({
       type: "GET",
-      url: 'http://api.datamuse.com/words?sp=' + source_word + "&qe=sp&md=sp",
+      url: 'https://api.datamuse.com/words?sp=' + source_word + "&qe=sp&md=sp",
       dataType: "json",
       cache: false,
       crossDomain: true,
