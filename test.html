@@ -4,7 +4,7 @@
 </head>
 <body>
 <h2>Stinky Pinky</h2>
-Version 1.0.0
+Version 1.0.1
 Clue1: <div id="clue-1"></div>
 
 Clue2: <div id="clue-2"></div>
@@ -81,8 +81,12 @@ function generate_first_puzzle_word() {
     var potential_words = [];
     for (var index = 0; index < data.length; index++)
     {
-      if (data[index]['numSyllables'] === syllables && data[index]['tags'].indexOf('adj') > -1){
-        potential_words.push(data[index]['word']);
+      try{
+        if (data[index]['numSyllables'] === syllables && data[index]['tags'].indexOf('adj') > -1){
+          potential_words.push(data[index]['word']);
+        }
+      } except (Exception e) {
+        console.log("Exception while trying to index into data object");
       }
     }
     
