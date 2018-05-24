@@ -4,7 +4,7 @@
 </head>
 <body>
 <h2>Stinky Pinky</h2>
-<div id='version'>Version 1.0.2</div>
+<div id='version'>Version 1.0.3</div>
 Clue1: <div id="clue-1"></div>
 
 Clue2: <div id="clue-2"></div>
@@ -85,7 +85,7 @@ function generate_first_puzzle_word() {
         if (data[index]['numSyllables'] === syllables && data[index]['tags'].indexOf('adj') > -1){
           potential_words.push(data[index]['word']);
         }
-      } catch (Exception e) {
+      } catch (e) {
         console.log("Exception while trying to index into data object");
       }
     }
