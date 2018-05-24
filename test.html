@@ -4,7 +4,7 @@
 </head>
 <body>
 <h2>Stinky Pinky</h2>
-<div id='version'>Version 1.0.4</div>
+<div id='version'>Version 1.0.5</div>
 Clue1: <div id="clue-1"></div>
 
 Clue2: <div id="clue-2"></div>
@@ -119,7 +119,6 @@ function generate_puzzle() {
   
 function setup_winner_div()
 {
-  $('#winner').hide();
   $('#answer-input').on('input', function () {
     var guess = $(this).val();
     console.log(guess);
@@ -134,12 +133,13 @@ function setup_winner_div()
 }
   
 $(document).ready(function() {
-  setup_winner_div();
+  $('#winner').hide();
   while (failed)
   {
     failed = false;
     generate_puzzle();
   }
+  setup_winner_div();
 });
 </script>
 </body>
